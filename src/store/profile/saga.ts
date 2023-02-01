@@ -1,11 +1,11 @@
 import { setInstanceToken } from '@api/instance'
 import { api } from '@api/index'
 import storage from '@app/helpers/store-helper'
-import { getProfileError, getProfileSuccess, updateMoodError, updateMoodSuccess } from '@store/profile'
+import { getProfileError, getProfileSuccess, updateCitiesSuccess, updateCitiesError } from '@store/profile'
 import Router from 'next/router'
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 
-function* getProfileWorker() {
+function* getProfileWorker(): Generator {
   try {
     const profile = yield call(api.getProfile)
     yield put(getProfileSuccess(profile))
@@ -14,14 +14,14 @@ function* getProfileWorker() {
   }
 }
 
-function* updateCitiesWorker(action) {
-  const { payload: cities } = action
+function* updateCitiesWorker(action:any): Generator {
+  const { payload: cities  } = action
 
   try {
-    const citiesList = yield call(api.updateCities, { value: cities })
-    yield put(updateMoodSuccess(citiesList))
+    // const citiesList = yield call(api.updateCities, { cities })
+    // yield put(updateCitiesSuccess(citiesList))
   } catch (error) {
-    yield put(updateMoodError())
+    yield put(updateCitiesError())
   }
 }
 
