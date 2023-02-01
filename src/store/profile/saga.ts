@@ -1,7 +1,7 @@
 import { setInstanceToken } from '@api/instance'
 import { api } from '@api/index'
 import storage from '@app/helpers/store-helper'
-import { getProfileError, getProfileSuccess, updateCitiesSuccess, updateCitiesError } from '@store/profile'
+import { getProfileError, getProfileSuccess, addCitiesSuccess, addCitiesError } from '@store/profile'
 import Router from 'next/router'
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 
@@ -19,9 +19,9 @@ function* updateCitiesWorker(action:any): Generator {
 
   try {
     // const citiesList = yield call(api.updateCities, { cities })
-    // yield put(updateCitiesSuccess(citiesList))
+    // yield put(addCitiesSuccess(citiesList))
   } catch (error) {
-    yield put(updateCitiesError())
+    yield put(addCitiesError())
   }
 }
 

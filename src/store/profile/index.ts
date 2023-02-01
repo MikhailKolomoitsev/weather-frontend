@@ -20,14 +20,13 @@ const profile = createSlice({
     getProfileError: state => {
       state.loading = false
     },
-
-    updateCitiesRequest: (state, action) => {
+    addCitiesRequest: (state, action) => {
       state.loading = false
     },
-    updateCitiesSuccess: (state, action) => {
-      // state.data = { ...state.data, cities: action.payload.data }
+    addCitiesSuccess: (state, action) => {
+      state.data = { ...state.data, cities: { ...state.data?.cities, ...action.payload.data }}
     },
-    updateCitiesError: state => {
+    addCitiesError: state => {
       state.loading = false
     },
 
@@ -37,6 +36,6 @@ const profile = createSlice({
   },
 })
 
-export const { getProfileRequest, getProfileSuccess, getProfileError, updateCitiesRequest, updateCitiesSuccess, updateCitiesError, logout } = profile.actions
+export const { getProfileRequest, getProfileSuccess, getProfileError, addCitiesRequest, addCitiesSuccess, addCitiesError, logout } = profile.actions
 
 export default profile.reducer
