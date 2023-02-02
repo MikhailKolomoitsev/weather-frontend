@@ -50,7 +50,7 @@ const Home = () => {
       <CitiesForm />
       {!localWeather && (
         <GetLocal onClick={getPostition} variant="contained">
-          Get Local Forecast
+          Weather by your location
         </GetLocal>
       )}
       {localWeather && <WeatherWidget data={localWeather}></WeatherWidget>}
