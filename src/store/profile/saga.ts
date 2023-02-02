@@ -11,8 +11,6 @@ import {
 } from '@store/profile'
 import Router from 'next/router'
 import { all, call, put, takeLatest } from 'redux-saga/effects'
-import getLocation from '../../helpers/location-helper'
-import getUserLocation from '../../helpers/location-helper'
 
 function* getProfileWorker(): Generator {
   try {
@@ -31,16 +29,6 @@ function* addCitiesWorker(action: any): Generator {
     yield put(addCitiesSuccess(citiesList))
   } catch (error) {
     yield put(addCitiesError())
-  }
-}
-
-function* getLocalWeatherWorker(action: any): Generator {
-  try {
-    const location = yield call(getLocation)
-    console.log(location)
-    yield put(getLocalWeatherSuccess('hello'))
-  } catch (error) {
-    yield put(getLocalWeatherError())
   }
 }
 

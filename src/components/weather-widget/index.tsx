@@ -1,12 +1,20 @@
-import { styled } from '@mui/material'
+import { Card, styled, Typography } from '@mui/material'
 import CitiesCard from '../cities-card'
 
 export const WeatherWidget = (data: any) => {
-  return <CitiesCard data={data} />
+  
+  return (
+    <Container>
+      <Typography variant="h5" component="div">Weather at your location</Typography>
+    </Container>
+  )
 }
 
-const Fixed = styled('form')`
+const Container = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 20px;
 `

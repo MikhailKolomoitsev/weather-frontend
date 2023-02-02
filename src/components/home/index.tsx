@@ -1,10 +1,11 @@
 import { Button, styled, Typography } from '@mui/material'
+import { AxiosResponse } from 'axios'
 import { useEffect, useMemo, useState } from 'react'
+import { api } from '../../api'
 import {
   useAppDispatch,
-  useShallowEqualSelector,
+  useShallowEqualSelector
 } from '../../hooks/redux-typed-hooks'
-import { getLocalWeatherRequest } from '../../store/profile'
 import { getWeatherRequest } from '../../store/weather'
 import CitiesCard from '../cities-card'
 import CitiesForm from '../cities-form'
@@ -15,14 +16,18 @@ const Home = () => {
   const dispatch = useAppDispatch()
   const { data: profile, loading } = useShallowEqualSelector(s => s.profile)
   const { data: weather } = useShallowEqualSelector(s => s.weather)
-  const [lontitude, setLontitude] = useState(0)
-  const [latitude, setLatitude] = useState(0)
+  const [localWeather, setLocalWeather] = useState<AxiosResponse | null | void>(null);
 
+  let longitude: number
+  let latitude: number
   const getPostition = async () => {
-    await navigator.geolocation.getCurrentPosition(position => {
-      setLontitude(position.coords.latitude)
-      setLatitude(position.coords.longitude)
+    await navigator.geolocation.getCurrentPosition(async (position) => {
+      latitude = position.coords.latitude
+      longitude = position.coords.longitude
+      const localWeather = await api.getLocalWeather(latitude, longitude)
+      setLocalWeather(localWeather)
     })
+   
   }
 
   useEffect(() => {
@@ -30,7 +35,10 @@ const Home = () => {
   }, [profile?.cities])
 
   const weatherItems = useMemo(
-    () => weather.map((city: any) => <CitiesCard key={city.id} data={city} />),
+    () => {
+      // const prepareData
+      return weather.map((city: any) => <CitiesCard key={city.id} data={city} />)
+    },
     [weather]
   )
 
@@ -40,9 +48,13 @@ const Home = () => {
         Welcome, {profile?.email}
       </MainHeading>
       <CitiesForm />
-      {!lontitude && !latitude && (<GetLocal onClick={getPostition} variant='contained' >Get Local Forecast</GetLocal>)}
-      {lontitude && latitude && (<WeatherWidget data={{}}></WeatherWidget>)}
-      
+      {!localWeather && (
+        <GetLocal onClick={getPostition} variant="contained">
+          Get Local Forecast
+        </GetLocal>
+      )}
+      {localWeather && <WeatherWidget data={localWeather}></WeatherWidget>}
+
       <Loader loading={loading}>
         <CitiesList>{weatherItems}</CitiesList>
       </Loader>
