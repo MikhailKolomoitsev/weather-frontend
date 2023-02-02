@@ -1,10 +1,10 @@
 import { store } from "@app/store";
+import createEmotionCache from "@app/utils/emotion-cache";
 import { CacheProvider } from "@emotion/react";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import createEmotionCache from "@app/utils/emotion-cache";
 import MainLayout from "../components/layout";
-
+import '../styles/globals.css';
 const clientSideEmotionCache = createEmotionCache();
 
 interface CustomProps extends AppProps {

@@ -12,14 +12,14 @@ const CitiesForm = () => {
       name: '',
     },
     onSubmit: async (values: CitiesModel) => {
-      console.log(values);
       await dispatch(addCitiesRequest(values.name))
+      await dispatch(getProfileRequest())
     }
   });
   return (
       <StyledFrom onSubmit={formik.handleSubmit}>
         <TextField name="name" id='name' type="text" value={formik.values.name} onChange={formik.handleChange} />
-        <SubmitButton variant="contained" type="submit">Find City</SubmitButton>
+        <SubmitButton variant="contained" type="submit">Add City</SubmitButton>
       </StyledFrom>
   )
 } 

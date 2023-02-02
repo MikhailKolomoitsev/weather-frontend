@@ -4,11 +4,12 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface ProfileInterface {
   data: UsersModel | null
   loading: boolean
+  localWeather: any | null
 }
 
 const profile = createSlice({
   name: 'profile',
-  initialState: { data: null, loading: false } as ProfileInterface,
+  initialState: { data: null, loading: false, localWeather: null } as ProfileInterface,
   reducers: {
     getProfileRequest: state => {
       state.loading = true
@@ -25,11 +26,24 @@ const profile = createSlice({
     },
     addCitiesSuccess: (state, action) => {
       const { name, id } = action.payload.data
-      state.data?.cities.push({ name, id })
+      if (!state.data?.cities?.some(city => (city.name === name))) {
+        state.data?.cities?.push({ name, id })
+      }
     },
     addCitiesError: state => {
       state.loading = false
     },
+    getLocalWeatherRequest: state => {
+      state.loading = true
+    },
+    getLocalWeatherSuccess: (state, action) => {
+      state.localWeather = action.payload.data
+      state.loading = false
+    },
+    getLocalWeatherError: state => {
+      state.loading = false
+    },
+
 
     logout: state => {
       state.data = null
@@ -44,6 +58,9 @@ export const {
   addCitiesRequest,
   addCitiesSuccess,
   addCitiesError,
+  getLocalWeatherRequest,
+  getLocalWeatherSuccess,
+  getLocalWeatherError,
   logout,
 } = profile.actions
 
