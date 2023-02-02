@@ -24,7 +24,8 @@ const profile = createSlice({
       state.loading = false
     },
     addCitiesSuccess: (state, action) => {
-      state.data = { ...state.data, cities: { ...state.data?.cities, ...action.payload.data }}
+      const { name, id } = action.payload.data
+      state.data?.cities.push({ name, id })
     },
     addCitiesError: state => {
       state.loading = false
@@ -36,6 +37,14 @@ const profile = createSlice({
   },
 })
 
-export const { getProfileRequest, getProfileSuccess, getProfileError, addCitiesRequest, addCitiesSuccess, addCitiesError, logout } = profile.actions
+export const {
+  getProfileRequest,
+  getProfileSuccess,
+  getProfileError,
+  addCitiesRequest,
+  addCitiesSuccess,
+  addCitiesError,
+  logout,
+} = profile.actions
 
 export default profile.reducer

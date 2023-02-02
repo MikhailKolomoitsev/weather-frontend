@@ -1,3 +1,5 @@
-export interface CitiesModel{
-    name: string
+export interface CitiesModel {
+  id?: string
+  name?: string
+  userId?: string
 }

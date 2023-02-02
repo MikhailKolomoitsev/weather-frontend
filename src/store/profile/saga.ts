@@ -1,7 +1,7 @@
-import { setInstanceToken } from '@api/instance'
 import { api } from '@api/index'
+import { setInstanceToken } from '@api/instance'
 import storage from '@app/helpers/store-helper'
-import { getProfileError, getProfileSuccess, addCitiesSuccess, addCitiesError } from '@store/profile'
+import { addCitiesError, addCitiesSuccess, getProfileError, getProfileSuccess } from '@store/profile'
 import Router from 'next/router'
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 
@@ -14,12 +14,12 @@ function* getProfileWorker(): Generator {
   }
 }
 
-function* updateCitiesWorker(action:any): Generator {
-  const { payload: cities  } = action
+function* addCitiesWorker(action: any): Generator {
+  const { payload: city } = action
 
   try {
-    // const citiesList = yield call(api.updateCities, { cities })
-    // yield put(addCitiesSuccess(citiesList))
+    const citiesList = yield call(api.addCity, city)
+    yield put(addCitiesSuccess(citiesList))
   } catch (error) {
     yield put(addCitiesError())
   }
@@ -36,7 +36,7 @@ function* logoutWorker() {
 function* profileSaga() {
   yield all([
     takeLatest('profile/getProfileRequest', getProfileWorker),
-    takeLatest('profile/updateCitiesRequest', updateCitiesWorker),
+    takeLatest('profile/addCitiesRequest', addCitiesWorker),
     takeLatest('profile/logout', logoutWorker),
   ])
 }

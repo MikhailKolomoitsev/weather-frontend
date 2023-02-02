@@ -1,19 +1,19 @@
 import { Button, styled, TextField } from '@mui/material'
 import {  useFormik  } from 'formik'
-import { CitiesModel } from '../../models/cities.model'
-
-const INITIAL_VALUES: CitiesModel = {
-  name: '',
-}
+import { useAppDispatch } from '@app/hooks/redux-typed-hooks'
+import { CitiesModel } from '@app/models/cities.model'
+import { addCitiesRequest, getProfileRequest } from '@app/store/profile'
 
 const CitiesForm = () => {
+  const dispatch = useAppDispatch()
 
   const formik = useFormik({
     initialValues: {
       name: '',
     },
     onSubmit: async (values: CitiesModel) => {
-      dispatch(create(values))
+      console.log(values);
+      await dispatch(addCitiesRequest(values.name))
     }
   });
   return (
