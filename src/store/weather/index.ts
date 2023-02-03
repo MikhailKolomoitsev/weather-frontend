@@ -22,10 +22,27 @@ const weather = createSlice({
     getWeatherError: state => {
       state.loading = false
     },
+    removeCityRequest: (state, action) => {
+      state.loading = true
+    },
+    removeCitySuccess: (state, action) => {
+      console.log(action.payload)
+      state.data = state.data.filter((city: any) => city.id === action.payload)
+      state.loading = false
+    },
+    removeCityError: state => {
+      state.loading = false
+    },
   },
 })
 
-export const { getWeatherRequest, getWeatherSuccess, getWeatherError } =
-  weather.actions
+export const {
+  getWeatherRequest,
+  getWeatherSuccess,
+  getWeatherError,
+  removeCityRequest,
+  removeCitySuccess,
+  removeCityError,
+} = weather.actions
 
 export default weather.reducer

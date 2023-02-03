@@ -1,10 +1,18 @@
-import { Button, styled, Typography } from '@mui/material'
+import { Button, styled, StyledComponentProps, Typography } from '@mui/material'
+import { CreateStyledComponent, StyledComponent } from '@mui/styled-engine'
+import { MUIStyledCommonProps, Theme } from '@mui/system'
 import { AxiosResponse } from 'axios'
-import { useEffect, useMemo, useState } from 'react'
+import {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { api } from '../../api'
 import {
   useAppDispatch,
-  useShallowEqualSelector
+  useShallowEqualSelector,
 } from '../../hooks/redux-typed-hooks'
 import { getWeatherRequest } from '../../store/weather'
 import CitiesCard from '../cities-card'
@@ -16,18 +24,19 @@ const Home = () => {
   const dispatch = useAppDispatch()
   const { data: profile, loading } = useShallowEqualSelector(s => s.profile)
   const { data: weather } = useShallowEqualSelector(s => s.weather)
-  const [localWeather, setLocalWeather] = useState<AxiosResponse | null | void>(null);
+  const [localWeather, setLocalWeather] = useState<AxiosResponse | null | void>(
+    null
+  )
 
   let longitude: number
   let latitude: number
   const getPostition = async () => {
-    await navigator.geolocation.getCurrentPosition(async (position) => {
+    await navigator.geolocation.getCurrentPosition(async position => {
       latitude = position.coords.latitude
       longitude = position.coords.longitude
       const localWeather = await api.getLocalWeather(latitude, longitude)
       setLocalWeather(localWeather)
     })
-   
   }
 
   useEffect(() => {
@@ -36,7 +45,6 @@ const Home = () => {
 
   const weatherItems = useMemo(
     () => {
-      // const prepareData
       return weather.map((city: any) => <CitiesCard key={city.id} data={city} />)
     },
     [weather]
@@ -44,20 +52,22 @@ const Home = () => {
 
   return (
     <Container>
-      <MainHeading variant="h1" gutterBottom>
-        Welcome, {profile?.email}
-      </MainHeading>
-      <CitiesForm />
-      {!localWeather && (
-        <GetLocal onClick={getPostition} variant="contained">
-          Weather by your location
-        </GetLocal>
-      )}
-      {localWeather && <WeatherWidget data={localWeather}></WeatherWidget>}
+      <>
+        <MainHeading variant="h1" gutterBottom>
+          Welcome, {profile?.email}
+        </MainHeading>
+        <CitiesForm />
+        {!localWeather && (
+          <GetLocal onClick={getPostition} variant="contained">
+            Weather by your location
+          </GetLocal>
+        )}
+        {localWeather && <WeatherWidget data={localWeather}></WeatherWidget>}
 
-      <Loader loading={loading}>
-        <CitiesList>{weatherItems}</CitiesList>
-      </Loader>
+        <Loader loading={loading}>
+          <CitiesList>{weatherItems}</CitiesList>
+        </Loader>
+      </>
     </Container>
   )
 }
